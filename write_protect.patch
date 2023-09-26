@@ -1,0 +1,14 @@
+179,180c179,180
+< 	for(size_t i=0; i<page_no; i++)
+< 		addr[i*size]=0;
+---
+> /*	for(size_t i=0; i<page_no; i++)
+> 		addr[i*size]=0;*/
+188c188
+< 	uffdio_api.features = UFFD_FEATURE_PAGEFAULT_FLAG_WP;
+---
+> 	uffdio_api.features = UFFD_FEATURE_WP_HUGETLBFS_SHMEM;
+190c190
+< 		errExit("ioctl-UFFDIO_API");
+---
+> 		errExit("ioctl-UFFDIO_API features");

@@ -1,0 +1,69 @@
+16a17,23
+> 
+> 
+>   int fd2;
+> 
+> 
+> 
+>  
+20a28,32
+> 
+>    fd2 = open("/mnt/template_ram/memory", O_CREAT | O_RDWR, 0644);
+>    if(fd2 == -1)	perror("Issue opening bf");
+> 
+> 
+24,26d35
+<  /* lseek(fd, 0, SEEK_SET);
+<   if (write(fd, empty_mem, page_size) == -1) perror("Write Error");
+<   lseek(fd, 0, SEEK_SET);*/
+29a39
+>   lseek(fd2, 0, SEEK_SET);
+30a41,42
+>   char *empty_mem = (char *)malloc(sizeof(char)*size);
+>    memset(empty_mem,0,size);
+32,33d43
+<   char *ptr = mmap ( NULL, page_size, 
+<       PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0 ); //anon
+34a45,55
+>   for(size_t index = 0; index<page_no; index++){
+>            lseek(fd2, (index*size), SEEK_SET);
+>         if (write(fd2, empty_mem, size) == -1) perror("Write Error");
+> 
+>    }
+> 
+>   lseek(fd2, 0, SEEK_SET);
+> 
+> 
+>   char *ptr = mmap ( NULL, page_size, 
+>       PROT_READ | PROT_WRITE, MAP_SHARED, fd2, 0 ); 
+39a61,64
+> 
+>    /*   char *ptr = mmap ( NULL, page_size, 
+>       PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0 ); //anon*/
+> 
+49a75,78
+>    ptr[0]='a';
+> 
+> /*  for(int i=0; i<page_no; i++)
+>      ptr[i*size+2] = 0;*/
+51,55d79
+<  for(size_t i=0; i<page_no; i++){
+<       char val = ptr[i*size];
+< //      printf("Val:%c\n", val);
+<       ptr[(i*size)+2] = 0;
+<  }
+57c81
+< /*  printf("The elements of the array => ");
+---
+>  printf("The elements of the array => ");
+61,68c85
+<   printf("\n");*/
+< 
+< 
+<   /*int err = munmap(ptr, 10*sizeof(int));
+<   if(err != 0){
+<      printf("UnMapping Failed\n");
+<      return 1;
+<   }*/
+---
+>   printf("\n");
